@@ -1,7 +1,9 @@
 # UAE_Green Advisor
 
 🌿 Plant Care & Landscaping Advisor Agent
+
 ****Phase 1:** Foundation & System Design**
+
 **Goal:** Define the agent's brain before writing a single line of code.
 **Tasks:**
 - Define the agent's persona (friendly UAE plant expert, bilingual EN/AR)
@@ -11,6 +13,7 @@
 - Map out the conversation flow (greeting → diagnosis → recommendation → follow-up)
 
 **Phase 2: Core Diagnosis Engine**
+
 **Goal:** Build the single-turn diagnosis — user describes/shows a problem, agent responds with a diagnosis.
 **Tasks:**
 - Set up the Groq API call with the system prompt from Phase 1
@@ -20,6 +23,7 @@
 - Add Arabic language support (detect language and respond accordingly)
 
 **Phase 3: UAE Weather & Context Integration**
+
 **Goal:** Make the agent aware of real-time UAE conditions so advice is seasonally accurate.
 **Tasks:**
 - Connect OpenWeatherMap free API for Dubai, Abu Dhabi, and Sharjah
@@ -29,6 +33,7 @@
 - Test how advice changes across seasons and locations
 
 **Phase 4: Frontend UI Build**
+
 **Goal:** Build a clean, mobile-friendly interface that feels professional.
 **Tasks:**
 - Design the chat UI with plant-themed aesthetics (greens, earthy tones)
