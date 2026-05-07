@@ -10,7 +10,7 @@ import os
 import io
 import requests
 from datetime import datetime
-
+import html as html_lib
 import streamlit as st
 from groq import Groq
 from PIL import Image
@@ -743,27 +743,31 @@ if not st.session_state.messages:
     </div>
     """
 else:
-    for msg in st.session_state.messages:
-        if msg["role"] == "user":
-            chat_html += f"""
-            <div class='msg-wrap-user'>
-                <div>
-                    <div class='bubble-label' style='text-align:right'>You</div>
-                    <div class='bubble-user'>{msg['content']}</div>
-                </div>
-            </div>
-            """
-        else:
-            formatted = msg["content"].replace("\n", "<br>")
-            chat_html += f"""
-            <div class='msg-wrap-agent'>
-                <div>
-                    <div class='bubble-label'>🌿 GreenAdvisor</div>
-                    <div class='bubble-agent'>{formatted}</div>
-                </div>
-            </div>
-            """
+    # NEW — sanitize user input, render agent HTML properly
 
+for msg in st.session_state.messages:
+    if msg["role"] == "user":
+        # Escape user content to prevent injection
+        safe_content = html_lib.escape(msg["content"]).replace("\n", "<br>")
+        chat_html += f"""
+        <div class='msg-wrap-user'>
+            <div>
+                <div class='bubble-label' style='text-align:right'>You</div>
+                <div class='bubble-user'>{safe_content}</div>
+            </div>
+        </div>
+        """
+    else:
+        # Agent content — escape first, then convert newlines to <br>
+        safe_reply = html_lib.escape(msg["content"]).replace("\n", "<br>")
+        chat_html += f"""
+        <div class='msg-wrap-agent'>
+            <div>
+                <div class='bubble-label'>🌿 GreenAdvisor</div>
+                <div class='bubble-agent'>{safe_reply}</div>
+            </div>
+        </div>
+        """
 chat_html += "</div>"
 st.markdown(chat_html, unsafe_allow_html=True)
 
