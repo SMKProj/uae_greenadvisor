@@ -745,29 +745,29 @@ if not st.session_state.messages:
 else:
     # NEW — sanitize user input, render agent HTML properly
 
-for msg in st.session_state.messages:
-    if msg["role"] == "user":
-        # Escape user content to prevent injection
-        safe_content = html_lib.escape(msg["content"]).replace("\n", "<br>")
-        chat_html += f"""
-        <div class='msg-wrap-user'>
-            <div>
-                <div class='bubble-label' style='text-align:right'>You</div>
-                <div class='bubble-user'>{safe_content}</div>
+    for msg in st.session_state.messages:
+        if msg["role"] == "user":
+            # Escape user content to prevent injection
+            safe_content = html_lib.escape(msg["content"]).replace("\n", "<br>")
+            chat_html += f"""
+            <div class='msg-wrap-user'>
+                <div>
+                    <div class='bubble-label' style='text-align:right'>You</div>
+                    <div class='bubble-user'>{safe_content}</div>
+                </div>
             </div>
-        </div>
-        """
-    else:
-        # Agent content — escape first, then convert newlines to <br>
-        safe_reply = html_lib.escape(msg["content"]).replace("\n", "<br>")
-        chat_html += f"""
-        <div class='msg-wrap-agent'>
-            <div>
-                <div class='bubble-label'>🌿 GreenAdvisor</div>
-                <div class='bubble-agent'>{safe_reply}</div>
+            """
+        else:
+            # Agent content — escape first, then convert newlines to <br>
+            safe_reply = html_lib.escape(msg["content"]).replace("\n", "<br>")
+            chat_html += f"""
+            <div class='msg-wrap-agent'>
+                <div>
+                    <div class='bubble-label'>🌿 GreenAdvisor</div>
+                    <div class='bubble-agent'>{safe_reply}</div>
+                </div>
             </div>
-        </div>
-        """
+            """
 chat_html += "</div>"
 st.markdown(chat_html, unsafe_allow_html=True)
 
