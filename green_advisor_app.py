@@ -683,6 +683,12 @@ def run_diagnosis(user_message: str, image_b64: str | None, city: str) -> tuple[
             f"User request: {user_message if user_message.strip() else 'Please identify this plant and assess its health condition in UAE conditions.'}"
         )
 
+      st.write("image_b64 length:", len(image_b64) if image_b64 else 0)
+      if image_b64 and image_b64.startswith("data:"):
+        image_b64 = image_b64.split(",", 1)[1]
+      st.write("first 30 chars:", image_b64[:30] if image_b64 else "")
+
+
         # ── FIXED: Use inline_data Part dict (correct Gemini format) ──
         image_part = {
             "inline_data": {
@@ -692,18 +698,17 @@ def run_diagnosis(user_message: str, image_b64: str | None, city: str) -> tuple[
         }
 
         try:
-            resp = gemini_model.generate_content(
-              contents=[
-                {
-                  "role": "user",
-                  "parts": [
-                    image_part,
-                    {"text": vision_prompt}
-                  ]
-                }
-              ]
-            )
-
+          resp = gemini_model.generate_content(
+            contents=[
+              {
+                "role": "user",
+                "parts": [
+                  {"inline_data": {"mime_type": "image/jpeg", "data": image_b64}},
+                  {"text": vision_prompt}
+                ]
+              }
+            ]
+          )
             st.session_state.last_call_time = time.time()
             return resp.text, "gemini-vision"
         except Exception as e:
