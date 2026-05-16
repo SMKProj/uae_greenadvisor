@@ -654,7 +654,18 @@ def run_diagnosis(user_message: str, image_b64: str | None, city: str) -> tuple[
         }
 
         try:
-            resp = gemini_model.generate_content([image_part, vision_prompt])
+            resp = gemini_model.generate_content(
+              contents=[
+                {
+                  "role": "user",
+                  "parts": [
+                    image_part,
+                    {"text": vision_prompt}
+                  ]
+                }
+              ]
+)
+
             st.session_state.last_call_time = time.time()
             return resp.text, "gemini-vision"
         except Exception as e:
