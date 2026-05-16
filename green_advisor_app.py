@@ -477,19 +477,19 @@ def pil_to_base64_jpeg(pil_img: Image.Image, max_size: int = 1024) -> str:
     This is the CORRECT format for Gemini inline_data parts.
     """
     img = pil_img.copy()
-    # Convert RGBA / palette to RGB
-    if img.mode not in ("RGB", "L"):
-        img = img.convert("RGB")
+    # 🔥 CRITICAL FIX: Always convert first (WebP often loads as RGBA/P)
+    img = img.convert("RGB")
+
     # Resize if very large (reduces API payload)
     w, h = img.size
     if max(w, h) > max_size:
         scale = max_size / max(w, h)
         img = img.resize((int(w * scale), int(h * scale)), Image.LANCZOS)
+
     buf = io.BytesIO()
     img.save(buf, format="JPEG", quality=85)
+
     return base64.b64encode(buf.getvalue()).decode("utf-8")
-
-
 # ─────────────────────────────────────────────────────────────
 # WEATHER FUNCTIONS
 # ─────────────────────────────────────────────────────────────
