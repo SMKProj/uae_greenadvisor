@@ -29,6 +29,12 @@ from groq import Groq
 from PIL import Image
 from google import genai 
 
+import google
+st.write("google package version:", getattr(google, "__version__", "unknown"))
+
+key = st.secrets.get("GEMINI_API_KEY", os.environ.get("GEMINI_API_KEY", ""))
+st.write("GEMINI_API_KEY present:", bool(key))
+
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────────────────────
