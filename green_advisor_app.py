@@ -28,46 +28,7 @@ import streamlit as st
 from groq import Groq
 from PIL import Image
 from google import genai 
-
-import importlib.metadata as md
-
-try:
-    genai_version = md.version("google-genai")
-except Exception:
-    genai_version = "not installed"
-
-st.write("google-genai version:", genai_version)
-
-
 import importlib, traceback, streamlit as st
-
-def runtime_sdk_checks():
-    out = {}
-    try:
-        import google
-        out["google_version"] = getattr(google, "__version__", "unknown")
-        out["google_file"] = getattr(google, "__file__", None)
-    except Exception:
-        out["google_import_error"] = traceback.format_exc()
-
-    try:
-        from google import genai
-        out["genai_loaded"] = True
-        out["genai_file"] = getattr(genai, "__file__", None)
-    except Exception:
-        out["genai_load_error"] = traceback.format_exc()
-        out["genai_loaded"] = False
-
-    try:
-        import google.generativeai as old
-        out["old_sdk_present"] = True
-        out["old_sdk_file"] = getattr(old, "__file__", None)
-    except Exception:
-        out["old_sdk_present"] = False
-
-    st.json(out)
-
-runtime_sdk_checks()
 
 
 # ─────────────────────────────────────────────────────────────
