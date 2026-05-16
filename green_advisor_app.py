@@ -31,37 +31,6 @@ from google import genai
 
 import importlib, sys, traceback, streamlit as st
 
-def runtime_sdk_checks():
-    out = {}
-    try:
-        import google
-        out["google_version"] = getattr(google, "__version__", "unknown")
-        out["google_file"] = getattr(google, "__file__", "unknown")
-    except Exception as e:
-        out["google_import_error"] = traceback.format_exc()
-
-    try:
-        # new SDK
-        from google import genai
-        out["genai_loaded"] = True
-        out["genai_file"] = getattr(genai, "__file__", "unknown")
-        out["genai_attrs"] = ", ".join(sorted([a for a in dir(genai) if not a.startswith("_")])[:10])
-    except Exception as e:
-        out["genai_load_error"] = traceback.format_exc()
-
-    try:
-        # old SDK (should NOT be used)
-        import google.generativeai as old_genai
-        out["old_sdk_present"] = True
-        out["old_sdk_file"] = getattr(old_genai, "__file__", "unknown")
-    except Exception:
-        out["old_sdk_present"] = False
-
-    st.json(out)
-
-runtime_sdk_checks()
-
-
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────────────────────
