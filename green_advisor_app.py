@@ -29,6 +29,16 @@ from groq import Groq
 from PIL import Image
 from google import genai 
 
+import importlib.metadata as md
+
+try:
+    genai_version = md.version("google-genai")
+except Exception:
+    genai_version = "not installed"
+
+st.write("google-genai version:", genai_version)
+
+
 import importlib, traceback, streamlit as st
 
 def runtime_sdk_checks():
