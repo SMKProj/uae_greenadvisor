@@ -663,12 +663,6 @@ def run_diagnosis(user_message: str, image_b64: str | None, city: str) -> tuple[
               }
             ]
           )
-          st.write("image_b64 length:", len(image_b64) if image_b64 else 0)
-          if image_b64 and image_b64.startswith("data:"):
-            image_b64 = image_b64.split(",", 1)[1]
-            st.write("first 30 chars:", image_b64[:30] if image_b64 else "")
-
-
             st.session_state.last_call_time = time.time()
             return resp.text, "gemini-vision"
         except Exception as e:
