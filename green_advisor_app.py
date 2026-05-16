@@ -3,7 +3,7 @@ GreenAdvisor — UAE Plant Care & Landscaping Advisor
 ====================================================
 Primary Engine : Groq  (llama-3.3-70b-versatile)  — text diagnosis
 Vision Engine  : Gemini (gemini-1.5-flash)         — image analysis  ← BUG FIXED
-Weather        : Open-Meteo (free, no key needed)  ← upgraded from OpenWeatherMap
+Weather        : Open-Meteo (free, no kefy needed)  ← upgraded from OpenWeatherMap
 Built by       : Sundas Khan
 
 IMAGE BUG FIX NOTES
@@ -654,7 +654,19 @@ def run_diagnosis(user_message: str, image_b64: str | None, city: str) -> tuple[
         }
 
         try:
-            resp = gemini_model.generate_content([image_part, vision_prompt])
+          resp = gemini_model.generate_content(
+            contents=[{
+              "role": "user",
+              "parts": [
+                {
+                  "inline_data": {"mime_type": "image/jpeg","data": image_b64}
+                },
+                {
+                  "text": vision_prompt
+                }
+              ]
+            }]
+          )
             st.session_state.last_call_time = time.time()
             return resp.text, "gemini-vision"
         except Exception as e:
