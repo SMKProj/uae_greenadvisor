@@ -27,7 +27,7 @@ from datetime import datetime
 import streamlit as st
 from groq import Groq
 from PIL import Image
-import google.generativeai as genai
+from google import genai
 
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
@@ -448,16 +448,13 @@ def get_groq_client():
 
 @st.cache_resource
 def get_gemini_model():
-    """
-    Returns (model, status_message) tuple.
-    status: 'ok' | 'no_key' | 'error'
-    """
     key = st.secrets.get("GEMINI_API_KEY", os.environ.get("GEMINI_API_KEY", ""))
     if not key:
         return None, "no_key"
     try:
-        genai.configure(api_key=key)
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        from google import genai  # NEW SDK
+        client = genai.Client(api_key=key)
+        model = client.models.get("gemini-1.5-flash")
         return model, "ok"
     except Exception as e:
         return None, f"error:{e}"
@@ -664,7 +661,7 @@ def run_diagnosis(user_message: str, image_b64: str | None, city: str) -> tuple[
                   ]
                 }
               ]
-)
+            )
 
             st.session_state.last_call_time = time.time()
             return resp.text, "gemini-vision"
