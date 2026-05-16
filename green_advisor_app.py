@@ -667,8 +667,8 @@ def run_diagnosis(user_message: str, image_b64: str | None, city: str) -> tuple[
               ]
             }]
           )
-            st.session_state.last_call_time = time.time()
-            return resp.text, "gemini-vision"
+          st.session_state.last_call_time = time.time()
+          return resp.text, "gemini-vision"
         except Exception as e:
             err_str = str(e)
             # Quota exhausted — fall through to Groq with note
