@@ -27,7 +27,7 @@ from datetime import datetime
 import streamlit as st
 from groq import Groq
 from PIL import Image
-import google.generativeai as genai
+from google import genai
 
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
